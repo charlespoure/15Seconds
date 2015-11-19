@@ -1,0 +1,81 @@
+package FifteenSecondsGame;
+
+import org.lwjgl.input.Mouse;
+import org.newdawn.slick.*;
+import org.newdawn.slick.state.*;
+
+public class MenuFin extends BasicGameState 
+{
+	public int getID() {return 5;}
+	
+	private Image i;
+	private Image[] tabretry, tabquit;
+	private int retry, quit;
+	private Sound clic;
+	
+	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException 
+	{
+		i = new Image("./images/15seconds/0/background/4.png");
+		clic = new Sound("./images/15seconds/0/game/sons/4.wav");
+		
+		retry = 0; quit = 0;
+		
+		tabretry = new Image[3];
+		tabquit = new Image[3];
+		
+		for(int i=0;i<3;i++)
+		{
+			tabretry[i] = new Image("./images/15seconds/0/boutons/2-"+i+".png");
+			tabquit[i] = new Image("./images/15seconds/0/boutons/1-"+i+".png");
+		}
+	}
+
+	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException 
+	{
+		i.draw(0,0);
+		tabretry[retry].draw(486,492);
+		tabquit[quit].draw(486,644);
+	}
+
+	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException 
+	{
+		Input c = arg0.getInput();
+		
+		if(c.getMouseX() > 486 && c.getMouseX() < 486+383)
+		{
+			if(c.getMouseY()>492 && c.getMouseY()<492+131)
+			{
+				retry=1;
+				if(c.isMousePressed(Input.MOUSE_LEFT_BUTTON))
+					clic.play();
+				if(c.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+					retry = 2;
+			}
+			else
+			{
+				retry = 0;
+			}
+			
+			if(c.getMouseY()>644 && c.getMouseY()<644+131)
+			{
+				quit=1;
+				if(c.isMousePressed(Input.MOUSE_LEFT_BUTTON))
+					clic.play();
+				if(c.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON))
+				{
+					quit = 2;
+				}
+			}
+			else
+			{
+				quit = 0;
+			}
+		}
+		
+		if(retry == 2)
+		{
+			if(!c.isMousePressed(Input.MOUSE_LEFT_BUTTON))
+				arg1.enterState(1);
+		}
+	}	
+}
